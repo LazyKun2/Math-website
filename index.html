@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -12,8 +11,6 @@ body {
     font-family: Arial;
     color: white;
     text-align: center;
-
-    /* 🌄 BACKGROUND IMAGE */
     background: url("Anime.jpg") no-repeat center center fixed;
     background-size: cover;
 }
@@ -71,20 +68,18 @@ h2 { font-size: 2em; }
 /* PAGES */
 .page { display: none; }
 
-/* 🌟 GLASS CARD */
+/* GLASS CARD */
 .card {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.2);
     color: white;
-
     padding: 25px;
     margin: 30px auto;
     width: 90%;
     max-width: 400px;
     border-radius: 15px;
-
     box-shadow: 0 0 25px rgba(0,0,0,0.6);
 }
 
@@ -94,7 +89,6 @@ input {
     margin: 10px;
     width: 85%;
     font-size: 1.2em;
-
     background: rgba(255,255,255,0.2);
     border: none;
     border-radius: 8px;
@@ -126,8 +120,39 @@ button.action:hover {
     color: lightblue;
     font-size: 1.2em;
 }
-</style>
 
+/* 📱 MOBILE FIX */
+@media (max-width: 600px) {
+
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
+
+    .menu button {
+        width: 90%;
+        font-size: 1.1em;
+        padding: 15px;
+    }
+
+    .card {
+        width: 95%;
+        padding: 15px;
+    }
+
+    input {
+        width: 95%;
+        font-size: 1em;
+    }
+
+    button.action {
+        width: 90%;
+        font-size: 1em;
+    }
+
+    .logo {
+        width: 150px;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -137,11 +162,8 @@ button.action:hover {
 <div class="container">
 
 <!-- HOME -->
-
 <div id="home">
-
 <img src="Inazuma.jpg" class="logo">
-
 <h1>The Casket</h1>
 <p style="font-size:1.3em;">Select a Function</p>
 
@@ -152,11 +174,9 @@ button.action:hover {
 <button onclick="show('prime')">Prime</button>
 <button onclick="show('quad')">Quadratic</button>
 </div>
-
 </div>
 
 <!-- CALCULATOR -->
-
 <div id="calc" class="page">
 <div class="card">
 <h2>Calculator</h2>
@@ -164,7 +184,10 @@ button.action:hover {
 <input id="a" placeholder="Number 1">
 <input id="b" placeholder="Number 2"><br>
 
-<button class="action" onclick="calc('+')">+</button> <button class="action" onclick="calc('-')">−</button> <button class="action" onclick="calc('*')">×</button> <button class="action" onclick="calc('/')">÷</button>
+<button class="action" onclick="calc('+')">+</button>
+<button class="action" onclick="calc('-')">−</button>
+<button class="action" onclick="calc('*')">×</button>
+<button class="action" onclick="calc('/')">÷</button>
 
 <p id="calcRes"></p>
 <span class="back" onclick="back()">⬅ Back</span>
@@ -172,7 +195,6 @@ button.action:hover {
 </div>
 
 <!-- FIBONACCI -->
-
 <div id="fib" class="page">
 <div class="card">
 <h2>Fibonacci</h2>
@@ -184,7 +206,6 @@ button.action:hover {
 </div>
 
 <!-- FACTORIAL -->
-
 <div id="fact" class="page">
 <div class="card">
 <h2>Factorial</h2>
@@ -196,7 +217,6 @@ button.action:hover {
 </div>
 
 <!-- PRIME -->
-
 <div id="prime" class="page">
 <div class="card">
 <h2>Prime Check</h2>
@@ -208,7 +228,6 @@ button.action:hover {
 </div>
 
 <!-- QUADRATIC -->
-
 <div id="quad" class="page">
 <div class="card">
 <h2>Quadratic</h2>
@@ -243,6 +262,12 @@ document.getElementById("home").style.display="block";
 function calc(op){
 let a=parseFloat(document.getElementById("a").value);
 let b=parseFloat(document.getElementById("b").value);
+
+if(isNaN(a) || isNaN(b)){
+document.getElementById("calcRes").innerText="Enter valid numbers";
+return;
+}
+
 let r;
 
 if(op==='+') r=a+b;
@@ -255,34 +280,64 @@ document.getElementById("calcRes").innerText="Result: "+r;
 
 /* Fibonacci */
 function fib(){
-let n=document.getElementById("fibN").value;
+let n=parseInt(document.getElementById("fibN").value);
+
+if(isNaN(n) || n<=0){
+document.getElementById("fibRes").innerText="Enter valid number";
+return;
+}
+
 let f=[0,1];
 for(let i=2;i<n;i++) f[i]=f[i-1]+f[i-2];
+
 document.getElementById("fibRes").innerText=f.slice(0,n);
 }
 
 /* Factorial */
 function fact(){
-let n=document.getElementById("factN").value;
+let n=parseInt(document.getElementById("factN").value);
+
+if(isNaN(n) || n<0){
+document.getElementById("factRes").innerText="Enter valid number";
+return;
+}
+
 let r=1;
 for(let i=1;i<=n;i++) r*=i;
+
 document.getElementById("factRes").innerText=r;
 }
 
 /* Prime */
 function prime(){
-let n=document.getElementById("primeN").value;
+let n=parseInt(document.getElementById("primeN").value);
+
+if(isNaN(n)){
+document.getElementById("primeRes").innerText="Enter valid number";
+return;
+}
+
 let p=true;
 if(n<2) p=false;
-for(let i=2;i<n;i++) if(n%i==0) p=false;
+
+for(let i=2;i<=Math.sqrt(n);i++){
+if(n%i==0){ p=false; break; }
+}
+
 document.getElementById("primeRes").innerText=p?"Prime":"Not Prime";
 }
 
 /* Quadratic */
 function quad(){
-let a=document.getElementById("qa").value;
-let b=document.getElementById("qb").value;
-let c=document.getElementById("qc").value;
+let a=parseFloat(document.getElementById("qa").value);
+let b=parseFloat(document.getElementById("qb").value);
+let c=parseFloat(document.getElementById("qc").value);
+
+if(isNaN(a)||isNaN(b)||isNaN(c)){
+document.getElementById("quadRes").innerText="Enter valid numbers";
+return;
+}
+
 let d=b*b-4*a*c;
 
 if(d<0){
